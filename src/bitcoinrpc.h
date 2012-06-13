@@ -21,7 +21,7 @@ int CommandLineRPC(int argc, char *argv[]);
 /** Convert parameter values for RPC call from strings to command-specific JSON objects. */
 json_spirit::Array RPCConvertValues(const std::string &strMethod, const std::vector<std::string> &strParams);
 
-typedef json_spirit::Value(*rpcfn_type)(const json_spirit::Array& params, bool fHelp);
+typedef json_spirit::Value(*rpcfn_type)(const json_spirit::Array& params, const std::string& user, bool fHelp);
 
 class CRPCCommand
 {
@@ -50,7 +50,7 @@ public:
      * @returns Result of the call.
      * @throws an exception (json_spirit::Value) when an error happens.
      */
-    json_spirit::Value execute(const std::string &method, const json_spirit::Array &params) const;
+    json_spirit::Value execute(const std::string &method, const json_spirit::Array &params, const std::string& user) const;
 };
 
 extern const CRPCTable tableRPC;

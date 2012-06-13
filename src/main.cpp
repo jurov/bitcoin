@@ -2800,7 +2800,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
 
         // Keep giving the same key to the same ip until they use it
         if (!mapReuseKey.count(pfrom->addr))
-            pwalletMain->GetKeyFromPool(mapReuseKey[pfrom->addr], true);
+            wallets["default"]->GetKeyFromPool(mapReuseKey[pfrom->addr], true);
 
         // Send back approval of order and pubkey to use
         CScript scriptPubKey;
@@ -3630,7 +3630,7 @@ void static BitcoinMiner(CWallet *pwallet)
                     assert(hash == pblock->GetHash());
 
                     SetThreadPriority(THREAD_PRIORITY_NORMAL);
-                    CheckWork(pblock.get(), *pwalletMain, reservekey);
+                    CheckWork(pblock.get(), *(wallets["default"]), reservekey);
                     SetThreadPriority(THREAD_PRIORITY_LOWEST);
                     break;
                 }

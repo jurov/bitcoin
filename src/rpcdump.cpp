@@ -32,7 +32,7 @@ public:
     }
 };
 
-Value importprivkey(const Array& params, bool fHelp)
+Value importprivkey(const Array& params, const std::string& user, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
@@ -54,6 +54,7 @@ Value importprivkey(const Array& params, bool fHelp)
     key.SetSecret(secret, fCompressed);
     CKeyID vchAddress = key.GetPubKey().GetID();
     {
+        CWallet* pwalletMain = wallets[user];
         LOCK2(cs_main, pwalletMain->cs_wallet);
 
         pwalletMain->MarkDirty();
@@ -69,7 +70,7 @@ Value importprivkey(const Array& params, bool fHelp)
     return Value::null;
 }
 
-Value dumpprivkey(const Array& params, bool fHelp)
+Value dumpprivkey(const Array& params, const std::string& user, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
@@ -85,6 +86,7 @@ Value dumpprivkey(const Array& params, bool fHelp)
         throw JSONRPCError(-3, "Address does not refer to a key");
     CSecret vchSecret;
     bool fCompressed;
+    CWallet* pwalletMain = wallets[user];
     if (!pwalletMain->GetSecret(keyID, vchSecret, fCompressed))
         throw JSONRPCError(-4,"Private key for address " + strAddress + " is not known");
     return CBitcoinSecret(vchSecret, fCompressed).ToString();

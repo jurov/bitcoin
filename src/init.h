@@ -7,7 +7,7 @@
 
 #include "wallet.h"
 
-extern CWallet* pwalletMain;
+extern std::map<std::string,CWallet*> wallets;
 
 void Shutdown(void* parg);
 bool AppInit2();
