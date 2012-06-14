@@ -379,7 +379,7 @@ Object blockToJSON(CWallet* pwalletMain, const CBlock& block, const CBlockIndex*
 /// Note: This interface may still be subject to change.
 ///
 
-string CRPCTable::help(string strCommand) const
+string CRPCTable::help(string strCommand, const std::string& user) const
 {
     string strRet;
     set<rpcfn_type> setDone;
@@ -397,7 +397,7 @@ string CRPCTable::help(string strCommand) const
             Array params;
             rpcfn_type pfn = pcmd->actor;
             if (setDone.insert(pfn).second)
-                (*pfn)(params, "", true);
+                (*pfn)(params, user, true);
         }
         catch (std::exception& e)
         {
@@ -426,7 +426,7 @@ Value help(const Array& params, const std::string &user, bool fHelp)
     if (params.size() > 0)
         strCommand = params[0].get_str();
 
-    return tableRPC.help(strCommand);
+    return tableRPC.help(strCommand, user);
 }
 
 

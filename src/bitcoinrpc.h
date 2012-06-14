@@ -41,7 +41,7 @@ private:
 public:
     CRPCTable();
     const CRPCCommand* operator[](std::string name) const;
-    std::string help(std::string name) const;
+    std::string help(std::string name, const std::string& user) const;
 
     /**
      * Execute a method.
